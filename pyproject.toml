@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "corpcrack"
+version = "1.0.0"
+description = "Corporate password list generator for internal security assessments"
+requires-python = ">=3.11"
+license = "MIT"
+
+[project.scripts]
+corpcrack = "corpcrack.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
