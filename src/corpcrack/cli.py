@@ -9,7 +9,13 @@ from datetime import date
 from pathlib import Path
 
 from corpcrack import __version__
-from corpcrack.generator import DEFAULT_WEIGHTS, MONTH_TO_SEASONS, generate
+from corpcrack.generator import (
+    DEFAULT_WEIGHTS,
+    MODIFIERS_ALL,
+    MODIFIERS_COMMON,
+    MONTH_TO_SEASONS,
+    generate,
+)
 
 BANNER = r"""
    ______                 ______                __
@@ -224,6 +230,11 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Only include passwords from these patterns (comma-separated)",
     )
     output.add_argument(
+        "--shift-modifiers",
+        metavar="MODE",
+        help="Trailing characters to append (default: '!', common: !@#$%%, all: !@#$%%^&*, none, or custom comma list)",
+    )
+    output.add_argument(
         "--show-weights",
         action="store_true",
         help="Print the current weight table and exit",
@@ -297,6 +308,25 @@ def main(argv: list[str] | None = None) -> None:
         if invalid:
             parser.error(f"unknown pattern(s): {', '.join(sorted(invalid))}")
 
+    # Parse --shift-modifiers
+    shift_modifiers: list[str] | None = None  # None = default (["!"])
+    if args.shift_modifiers is not None:
+        mode = args.shift_modifiers.strip().lower()
+        if mode in ("", "none"):
+            shift_modifiers = []
+        elif mode == "common":
+            shift_modifiers = list(MODIFIERS_COMMON)
+        elif mode == "all":
+            shift_modifiers = list(MODIFIERS_ALL)
+        else:
+            # Split each character individually if no commas present,
+            # otherwise split on commas
+            raw = args.shift_modifiers
+            if "," in raw:
+                shift_modifiers = [c.strip() for c in raw.split(",") if c.strip()]
+            else:
+                shift_modifiers = list(raw.strip())
+
     # Load weights
     weights = _load_weights(args.config) if args.config else None
 
@@ -330,6 +360,11 @@ def main(argv: list[str] | None = None) -> None:
         _info(f"  [+] Exclude file       : {args.exclude}")
     if pattern_filter:
         _info(f"  [+] Patterns           : {', '.join(sorted(pattern_filter))}")
+    if shift_modifiers is not None:
+        if shift_modifiers:
+            _info(f"  [+] Shift modifiers    : {' '.join(shift_modifiers)}")
+        else:
+            _info("  [+] Shift modifiers    : none")
     _info("")
 
     # Generate
@@ -340,6 +375,7 @@ def main(argv: list[str] | None = None) -> None:
         year_end=args.year_end,
         weights=weights,
         tiers=pattern_filter,
+        modifiers=shift_modifiers,
     )
 
     total_generated = len(passwords)

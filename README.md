@@ -26,6 +26,7 @@ CorpCrack generates a single likelihood-sorted list that serves two purposes. To
 | `--max-length N` | Exclude passwords longer than N characters |
 | `--exclude FILE` | Exclude passwords found in FILE (one per line) |
 | `--patterns LIST` | Only include passwords from these patterns (comma-separated) |
+| `--shift-modifiers MODE` | Trailing characters to append (default: `!`, `common`, `all`, `none`, or custom) |
 | `--show-weights` | Print the current weight table and exit |
 | `--config FILE` | Load tier weights from a TOML config file |
 | `--init-config [PATH]` | Generate a starter config file (`corpcrack.toml`) |
@@ -60,6 +61,9 @@ corpcrack -s ACME --year-start 2024 --year-end 2026 --exclude already_tried.txt
 
 # Only output static and company patterns
 corpcrack -s ACME --year-start 2024 --year-end 2026 --patterns static,company
+
+# Generate with all common shift modifiers (!@#$%) instead of just !
+corpcrack -s ACME --year-start 2024 --year-end 2026 --shift-modifiers common
 
 # See how your weights are currently ordered
 corpcrack --show-weights

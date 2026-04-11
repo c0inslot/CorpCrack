@@ -84,56 +84,55 @@ LEET_MULTI: dict[str, str] = {
 
 STATIC_PASSWORDS: list[str] = [
     # ---- Welcome — the undisputed #1 corporate default ----
-    "Welcome1", "Welcome1!",
-    "welcome1", "welcome1!",
-    "Welcome123", "Welcome123!",
-    "welcome123", "welcome123!",
+    "Welcome1",
+    "welcome1",
+    "Welcome123",
+    "welcome123",
 
     # ---- Password — the eternal classic ----
-    "Password1", "Password1!",
-    "password1", "password1!",
-    "Password123", "Password123!",
-    "password123", "password123!",
+    "Password1",
+    "password1",
+    "Password123",
+    "password123",
 
     # ---- P@ssw0rd — pre-leet that orgs hand out ----
-    "P@ssw0rd", "P@ssw0rd!",
-    "P@ssw0rd1", "P@ssw0rd1!",
-    "P@ssword1", "P@ssword1!",
+    "P@ssw0rd",
+    "P@ssw0rd1",
+    "P@ssword1",
     "P@ssword123",
-    "Passw0rd", "Passw0rd!",
-    "Passw0rd1", "Passw0rd1!",
+    "Passw0rd",
+    "Passw0rd1",
 
     # ---- Changeme — helpdesk reset classic ----
-    "Changeme1", "Changeme1!",
-    "changeme1", "changeme1!",
-    "Changeme123", "Changeme123!",
-    "Ch@ngeme1", "Ch@ngeme1!",
+    "Changeme1",
+    "changeme1",
+    "Changeme123",
+    "Ch@ngeme1",
 
     # ---- Letmein ----
-    "Letmein1", "Letmein1!",
-    "letmein1", "letmein1!",
-    "Letmein123", "Letmein123!",
+    "Letmein1",
+    "letmein1",
+    "Letmein123",
 
     # ---- Admin / reset / new-hire defaults ----
-    "Admin123", "Admin123!",
-    "admin123", "admin123!",
-    "Admin1234", "Admin1234!",
-    "Reset123", "Reset123!",
-    "Newuser1", "Newuser1!",
-    "Newuser123!",
-    "Changeit1", "Changeit1!",
+    "Admin123",
+    "admin123",
+    "Admin1234",
+    "Reset123",
+    "Newuser1",
+    "Newuser123",
+    "Changeit1",
 
     # ---- Test / temp / guest ----
-    "Test1234", "Test1234!",
-    "test1234", "test1234!",
-    "Temp1234", "Temp1234!",
-    "temp1234", "temp1234!",
-    "Guest1234", "Guest1234!",
+    "Test1234",
+    "test1234",
+    "Temp1234",
+    "temp1234",
+    "Guest1234",
 
     # ---- Keyboard walks — column walks (very common) ----
     "!QAZ2wsx",
     "1qaz2wsx",
-    "1qaz2wsx!",
     "1qaz!QAZ",
     "1qazZAQ!",
     "!QAZ1qaz",
@@ -141,65 +140,72 @@ STATIC_PASSWORDS: list[str] = [
     "3edc4rfv",
 
     # ---- Keyboard walks — row walks ----
-    "Qwerty1!", "qwerty1!",
-    "Qwerty123", "Qwerty123!",
-    "qwerty123", "qwerty123!",
-    "Qwer1234", "Qwer1234!",
-    "qwer1234", "qwer1234!",
-    "Asdf1234", "Asdf1234!",
-    "asdf1234", "asdf1234!",
-    "Asdfgh1!", "asdfgh1!",
-    "Zxcvbn1!", "Zxcvbn123!",
-    "zxcvbn1!", "zxcvbn123!",
+    "Qwerty1",
+    "qwerty1",
+    "Qwerty123",
+    "qwerty123",
+    "Qwer1234",
+    "qwer1234",
+    "Asdf1234",
+    "asdf1234",
+    "Asdfgh1",
+    "asdfgh1",
+    "Zxcvbn1",
+    "Zxcvbn123",
+    "zxcvbn1",
+    "zxcvbn123",
 
     # ---- Keyboard walks — alternating / diagonal ----
-    "1q2w3e4r", "1q2w3e4r!",
+    "1q2w3e4r",
     "!Q2w3e4r",
-    "Zaq12wsx", "Zaq12wsx!",
-    "Qazwsx123", "Qazwsx123!",
-    "Asdfghjkl1!",
+    "Zaq12wsx",
+    "Qazwsx123",
+    "Asdfghjkl1",
 
     # ---- Pop culture / well-known phrases ----
-    "Trustno1", "Trustno1!",
-    "Iloveyou1", "Iloveyou1!",
-    "Winteriscoming1", "Winteriscoming1!",
-    "winteriscoming1", "winteriscoming1!",
-    "Sunshine1", "Sunshine1!",
-    "Superman1", "Superman1!",
-    "Batman123", "Batman123!",
-    "Starwars1", "Starwars1!",
-    "Dragon123", "Dragon123!",
-    "Master123", "Master123!",
-    "Shadow123", "Shadow123!",
-    "Monkey123", "Monkey123!",
+    "Trustno1",
+    "Iloveyou1",
+    "Winteriscoming1",
+    "winteriscoming1",
+    "Sunshine1",
+    "Superman1",
+    "Batman123",
+    "Starwars1",
+    "Dragon123",
+    "Master123",
+    "Shadow123",
+    "Monkey123",
 
     # ---- Ihatepasswords ----
-    "Ihatepasswords1!", "Ihatepasswords2!", "Ihatepasswords3!",
-    "Ihatepasswords4!", "Ihatepasswords5!", "Ihatepasswords6!",
-    "Ihatepasswords7!", "Ihatepasswords8!", "Ihatepasswords9!",
-    "Ihatepasswords10!",
-    "ihatepasswords1!", "ihatepasswords2!", "ihatepasswords3!",
-    "ihatepasswords4!", "ihatepasswords5!", "ihatepasswords6!",
-    "ihatepasswords7!", "ihatepasswords8!", "ihatepasswords9!",
-    "ihatepasswords10!",
+    "Ihatepasswords1", "Ihatepasswords2", "Ihatepasswords3",
+    "Ihatepasswords4", "Ihatepasswords5", "Ihatepasswords6",
+    "Ihatepasswords7", "Ihatepasswords8", "Ihatepasswords9",
+    "Ihatepasswords10",
+    "ihatepasswords1", "ihatepasswords2", "ihatepasswords3",
+    "ihatepasswords4", "ihatepasswords5", "ihatepasswords6",
+    "ihatepasswords7", "ihatepasswords8", "ihatepasswords9",
+    "ihatepasswords10",
 
     # ---- Common base words ----
-    "Hello123", "Hello123!",
-    "Access14", "Access1!", "Access123", "Access123!",
-    "Abc123!", "abc123!",
-    "Abcd1234", "Abcd1234!",
+    "Hello123",
+    "Access14",
+    "Access1",
+    "Access123",
+    "Abc123",
+    "abc123",
+    "Abcd1234",
 
     # ---- Sports ----
-    "Football1", "Football1!",
-    "Baseball1", "Baseball1!",
+    "Football1",
+    "Baseball1",
 
     # ---- Days of the week ----
-    "Monday1!", "Tuesday1!", "Wednesday1!", "Thursday1!",
-    "Friday1!", "Saturday1!", "Sunday1!",
+    "Monday1", "Tuesday1", "Wednesday1", "Thursday1",
+    "Friday1", "Saturday1", "Sunday1",
 
     # ---- Placeholder company ----
-    "Company1", "Company1!",
-    "Company123", "Company123!",
+    "Company1",
+    "Company123",
 ]
 
 
@@ -223,22 +229,27 @@ MONTH_TO_SEASONS: dict[int, list[str]] = {
     10: ["Fall", "Autumn"], 11: ["Fall", "Autumn"], 12: ["Winter"],
 }
 
+# Shift modifier presets
+MODIFIERS_COMMON: list[str] = ["!", "@", "#", "$", "%"]
+MODIFIERS_ALL: list[str] = ["!", "@", "#", "$", "%", "^", "&", "*"]
+
 # Suffixes appended to company names — ordered most to least common
+# (shift modifiers are appended separately by the generator)
 BARE_SUFFIXES: list[str] = [
-    "1", "!", "1!",
-    "123", "123!",
-    "12", "12!",
-    "1234", "1234!",
-    "01", "01!",
+    "1",
+    "123",
+    "12",
+    "1234",
+    "01",
     "@1", "@123",
     "#1", "#123",
     "007",
-    "69", "69!",
+    "69",
     "77", "99",
 ]
 
-# Characters appended after a year
-YEAR_CAPS: list[str] = ["", "!", "#", "@", "$"]
+# Characters appended after a year (shift modifiers added separately)
+YEAR_CAPS: list[str] = ["", "#", "@", "$"]
 
 # Stop words stripped when processing long company names
 STOP_WORDS: frozenset[str] = frozenset({
@@ -308,6 +319,7 @@ def generate(
     year_end: int | None = None,
     weights: dict[str, int] | None = None,
     tiers: set[str] | None = None,
+    modifiers: list[str] | None = None,
 ) -> list[str]:
     """Generate a de-duplicated password list sorted by likelihood.
 
@@ -322,7 +334,10 @@ def generate(
     weights : dict, optional
         Tier weights that override DEFAULT_WEIGHTS.
     tiers : set[str], optional
-        If provided, only include passwords from these tier names.
+        If provided, only include passwords from these pattern names.
+    modifiers : list[str], optional
+        Shift modifiers to append. Defaults to ["!"].
+        Pass an empty list for no modifiers.
 
     Returns
     -------
@@ -333,6 +348,8 @@ def generate(
     if weights:
         w.update(weights)
 
+    mods = ["!"] if modifiers is None else modifiers
+
     # scored: password -> (weight, sub_order, tier_name)
     scored: dict[str, tuple[int, int, str]] = {}
 
@@ -340,6 +357,12 @@ def generate(
         key = (weight, sub, tier_name)
         if pw not in scored or key[:2] < scored[pw][:2]:
             scored[pw] = key
+
+    def _add_with_mods(pw: str, tier_name: str, weight: int, sub: int = 0) -> None:
+        """Add the base password and all shift-modifier variants."""
+        _add(pw, tier_name, weight, sub)
+        for mod in mods:
+            _add(f"{pw}{mod}", tier_name, weight, sub)
 
     years: list[int] = []
     if year_start is not None and year_end is not None:
@@ -355,7 +378,7 @@ def generate(
 
     # ---- 1. Static common passwords (index = rank) ----
     for i, pw in enumerate(STATIC_PASSWORDS):
-        _add(pw, "static", w["static"], i)
+        _add_with_mods(pw, "static", w["static"], i)
 
     # ---- 2. Current-time patterns (auto-detected) ----
     if year_is_current:
@@ -366,30 +389,25 @@ def generate(
         for season in current_seasons:
             for s in (season, season.lower()):
                 for yr in (yr_full, yr_short):
-                    _add(f"{s}{yr}", "season_current", w["season_current"])
-                    _add(f"{s}{yr}!", "season_current", w["season_current"])
-                    _add(f"{s}{yr}#", "season_current", w["season_current"])
+                    _add_with_mods(f"{s}{yr}", "season_current", w["season_current"])
 
         # Current month + year
         for m in (current_month_full, current_month_full.lower(),
                   current_month_abbr, current_month_abbr.lower()):
             for yr in (yr_full, yr_short):
-                _add(f"{m}{yr}", "month_current", w["month_current"])
-                _add(f"{m}{yr}!", "month_current", w["month_current"])
+                _add_with_mods(f"{m}{yr}", "month_current", w["month_current"])
 
         # Welcome / Password + current year
         for base in ("Welcome", "welcome", "Password", "password"):
             for yr in (yr_full, yr_short):
-                _add(f"{base}{yr}", "welcome_current", w["welcome_current"])
-                _add(f"{base}{yr}!", "welcome_current", w["welcome_current"])
+                _add_with_mods(f"{base}{yr}", "welcome_current", w["welcome_current"])
 
     # ---- 3. Winteriscoming + year ----
     for year in years:
         yr_short = str(year)[2:]
         for base in ("Winteriscoming", "winteriscoming"):
             for yr in (str(year), yr_short):
-                _add(f"{base}{yr}", "special", w["special"])
-                _add(f"{base}{yr}!", "special", w["special"])
+                _add_with_mods(f"{base}{yr}", "special", w["special"])
 
     # ---- 4. Company-name-derived passwords ----
     name_bases: set[str] = set()
@@ -404,7 +422,7 @@ def generate(
     for name in sorted(name_bases):
         # Company + bare suffix (ranked by suffix position)
         for idx, suffix in enumerate(BARE_SUFFIXES):
-            _add(f"{name}{suffix}", "company", w["company"], idx)
+            _add_with_mods(f"{name}{suffix}", "company", w["company"], idx)
 
         # Company + current season/month
         if year_is_current:
@@ -413,50 +431,43 @@ def generate(
             for season in current_seasons:
                 for s in (season, season.lower()):
                     for yr in (yr_full, yr_short):
-                        _add(f"{name}{s}{yr}", "company_current", w["company_current"])
-                        _add(f"{name}{s}{yr}!", "company_current", w["company_current"])
+                        _add_with_mods(f"{name}{s}{yr}", "company_current", w["company_current"])
             for m in (current_month_abbr, current_month_abbr.lower()):
                 for yr in (yr_full, yr_short):
-                    _add(f"{name}{m}{yr}", "company_current", w["company_current"])
-                    _add(f"{name}{m}{yr}!", "company_current", w["company_current"])
+                    _add_with_mods(f"{name}{m}{yr}", "company_current", w["company_current"])
 
         # Company + year
         for year in years:
             yr_short = str(year)[2:]
             for yr in (str(year), yr_short):
                 for cap in YEAR_CAPS:
-                    _add(f"{name}{yr}{cap}", "company_year", w["company_year"])
-                    _add(f"{name}@{yr}{cap}", "company_year", w["company_year"])
+                    _add_with_mods(f"{name}{yr}{cap}", "company_year", w["company_year"])
+                    _add_with_mods(f"{name}@{yr}{cap}", "company_year", w["company_year"])
 
             # Company + season + year
             for season in SEASONS:
                 for s in (season, season.lower()):
                     for yr in (str(year), yr_short):
-                        _add(f"{name}{s}{yr}", "company_season", w["company_season"])
-                        _add(f"{name}{s}{yr}!", "company_season", w["company_season"])
+                        _add_with_mods(f"{name}{s}{yr}", "company_season", w["company_season"])
 
             # Company + month + year (abbreviated)
             for _, month_abbr in MONTHS:
                 for yr in (str(year), yr_short):
-                    _add(f"{name}{month_abbr}{yr}", "company_month", w["company_month"])
-                    _add(f"{name}{month_abbr}{yr}!", "company_month", w["company_month"])
+                    _add_with_mods(f"{name}{month_abbr}{yr}", "company_month", w["company_month"])
 
         # Welcome + company + year
         for year in years:
             yr_short = str(year)[2:]
             for yr in (str(year), yr_short):
-                _add(f"Welcome2{name}{yr}", "welcome_company", w["welcome_company"])
-                _add(f"Welcome2{name}{yr}!", "welcome_company", w["welcome_company"])
-                _add(f"welcome2{name}{yr}", "welcome_company", w["welcome_company"])
-                _add(f"welcome2{name}{yr}!", "welcome_company", w["welcome_company"])
+                _add_with_mods(f"Welcome2{name}{yr}", "welcome_company", w["welcome_company"])
+                _add_with_mods(f"welcome2{name}{yr}", "welcome_company", w["welcome_company"])
 
     # ---- 5. Welcome / Password + year (all years) ----
     for year in years:
         yr_short = str(year)[2:]
         for base in ("Welcome", "welcome", "Password", "password"):
             for yr in (str(year), yr_short):
-                _add(f"{base}{yr}", "welcome", w["welcome"])
-                _add(f"{base}{yr}!", "welcome", w["welcome"])
+                _add_with_mods(f"{base}{yr}", "welcome", w["welcome"])
 
     # ---- 6. Generic season + year ----
     for year in years:
@@ -464,9 +475,7 @@ def generate(
         for season in SEASONS:
             for s in (season, season.lower()):
                 for yr in (str(year), yr_short):
-                    _add(f"{s}{yr}", "season", w["season"])
-                    _add(f"{s}{yr}!", "season", w["season"])
-                    _add(f"{s}{yr}#", "season", w["season"])
+                    _add_with_mods(f"{s}{yr}", "season", w["season"])
 
     # ---- 7. Generic month + year ----
     for year in years:
@@ -474,8 +483,7 @@ def generate(
         for month_full, month_abbr in MONTHS:
             for m in (month_full, month_full.lower(), month_abbr, month_abbr.lower()):
                 for yr in (str(year), yr_short):
-                    _add(f"{m}{yr}", "month", w["month"])
-                    _add(f"{m}{yr}!", "month", w["month"])
+                    _add_with_mods(f"{m}{yr}", "month", w["month"])
 
     # ---- 8. Leetspeak transformations on every password above ----
     base_items = list(scored.items())
@@ -497,7 +505,7 @@ def generate(
             if variant:
                 _add(variant, "leet_uncommon", base_weight + w["leet_uncommon"], base_sub)
 
-    # Filter by tiers if requested
+    # Filter by patterns if requested
     if tiers:
         scored = {pw: v for pw, v in scored.items() if v[2] in tiers}
 
