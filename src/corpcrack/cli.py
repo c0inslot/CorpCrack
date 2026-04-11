@@ -78,9 +78,50 @@ leet_uncommon = 30000
 """
 
 
+# Tier display order and examples for --show-weights
+TIER_INFO: list[tuple[str, str]] = [
+    ("static",           "Welcome1, Password123!, keyboard walks"),
+    ("season_current",   "Spring2026! (current season)"),
+    ("month_current",    "April2026! (current month)"),
+    ("welcome_current",  "Welcome2026! (current year)"),
+    ("special",          "Winteriscoming2025!"),
+    ("company",          "CompanyName1!, CompanyName123!"),
+    ("company_current",  "CompanyNameSpring2026!"),
+    ("welcome",          "Welcome2024!, Password2025!"),
+    ("welcome_company",  "Welcome2CompanyName2025!"),
+    ("company_year",     "CompanyName2024!, CompanyName@2025"),
+    ("season",           "Summer2024!, Winter2023!"),
+    ("company_season",   "CompanyNameSummer2024!"),
+    ("month",            "January2024!, Oct25!"),
+    ("company_month",    "CompanyNameJan2024!"),
+    ("leet_common",      "W3lcom31 (added to base weight)"),
+    ("leet_multi",       "W3l<0m31 (added to base weight)"),
+    ("leet_uncommon",    "Wel{ome1 (added to base weight)"),
+]
+
+
 def _info(msg: str) -> None:
     """Print informational message to stderr (keeps stdout clean for piping)."""
     print(msg, file=sys.stderr)
+
+
+def _print_weights(weights: dict[str, int], config_path: str | None = None) -> None:
+    """Print the weight table to stderr, sorted by weight."""
+    examples = dict(TIER_INFO)
+    rows = [(weights.get(name, 0), name) for name, _ in TIER_INFO]
+    rows.sort()
+
+    _info("")
+    if config_path:
+        _info(f"  Config: {config_path}")
+    else:
+        _info("  Config: default")
+    _info("")
+    _info(f"  {'Pattern':<20} {'Weight':>6}  Examples")
+    _info(f"  {'─' * 20} {'─' * 6}  {'─' * 45}")
+    for w, name in rows:
+        _info(f"  {name:<20} {w:>6}  {examples[name]}")
+    _info("")
 
 
 def _load_weights(config_path: str) -> dict[str, int]:
@@ -177,6 +218,16 @@ def _build_parser() -> argparse.ArgumentParser:
         metavar="FILE",
         help="Exclude passwords found in FILE (one per line)",
     )
+    output.add_argument(
+        "--patterns",
+        metavar="LIST",
+        help="Only include passwords from these patterns (comma-separated)",
+    )
+    output.add_argument(
+        "--show-weights",
+        action="store_true",
+        help="Print the current weight table and exit",
+    )
 
     config = parser.add_argument_group("config")
     config.add_argument(
@@ -215,6 +266,17 @@ def main(argv: list[str] | None = None) -> None:
         print(f"Config written to {out.resolve()}", file=sys.stderr)
         return
 
+    # Handle --show-weights early (print table and exit)
+    if args.show_weights:
+        if args.config:
+            if not Path(args.config).is_file():
+                parser.error(f"config file not found: {args.config}")
+            weights = _load_weights(args.config)
+        else:
+            weights = dict(DEFAULT_WEIGHTS)
+        _print_weights(weights, args.config)
+        return
+
     # Validate inputs
     if (args.year_start is None) != (args.year_end is None):
         parser.error("--year-start and --year-end must be used together")
@@ -226,6 +288,14 @@ def main(argv: list[str] | None = None) -> None:
         parser.error(f"exclude file not found: {args.exclude}")
     if args.config and not Path(args.config).is_file():
         parser.error(f"config file not found: {args.config}")
+
+    # Parse and validate --patterns
+    pattern_filter: set[str] | None = None
+    if args.patterns:
+        pattern_filter = {p.strip() for p in args.patterns.split(",") if p.strip()}
+        invalid = pattern_filter - set(DEFAULT_WEIGHTS)
+        if invalid:
+            parser.error(f"unknown pattern(s): {', '.join(sorted(invalid))}")
 
     # Load weights
     weights = _load_weights(args.config) if args.config else None
@@ -258,6 +328,8 @@ def main(argv: list[str] | None = None) -> None:
         _info(f"  [+] Top N limit        : {args.top}")
     if args.exclude:
         _info(f"  [+] Exclude file       : {args.exclude}")
+    if pattern_filter:
+        _info(f"  [+] Patterns           : {', '.join(sorted(pattern_filter))}")
     _info("")
 
     # Generate
@@ -267,6 +339,7 @@ def main(argv: list[str] | None = None) -> None:
         year_start=args.year_start,
         year_end=args.year_end,
         weights=weights,
+        tiers=pattern_filter,
     )
 
     total_generated = len(passwords)

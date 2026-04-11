@@ -25,6 +25,8 @@ CorpCrack generates a single likelihood-sorted list that serves two purposes. To
 | `--min-length N` | Exclude passwords shorter than N characters |
 | `--max-length N` | Exclude passwords longer than N characters |
 | `--exclude FILE` | Exclude passwords found in FILE (one per line) |
+| `--patterns LIST` | Only include passwords from these patterns (comma-separated) |
+| `--show-weights` | Print the current weight table and exit |
 | `--config FILE` | Load tier weights from a TOML config file |
 | `--init-config [PATH]` | Generate a starter config file (`corpcrack.toml`) |
 
@@ -56,6 +58,13 @@ corpcrack -s ACME --year-start 2024 --year-end 2026 --min-length 10
 # Exclude passwords you already tried in a previous spray window
 corpcrack -s ACME --year-start 2024 --year-end 2026 --exclude already_tried.txt
 
+# Only output static and company patterns
+corpcrack -s ACME --year-start 2024 --year-end 2026 --patterns static,company
+
+# See how your weights are currently ordered
+corpcrack --show-weights
+corpcrack --show-weights --config corpcrack.toml
+
 # Generate a default config, tweak weights, then use it
 corpcrack --init-config
 corpcrack -s ACME --year-start 2024 --year-end 2026 --config corpcrack.toml
@@ -65,9 +74,7 @@ corpcrack -s ACME --year-start 2024 --year-end 2026 --config corpcrack.toml
 
 ## How the output is sorted
 
-Every pattern has exactly one weight. Lower weight = appears earlier. Changing one key never affects any other pattern. Running `corpcrack` with no arguments outputs the static base list only, which is still useful as a baseline spray list.
-
-Patterns named `*_current` are boosted variants that match the current season, month, or year based on your system clock. For example, if you run the tool in April 2026, `Spring2026!` lands at `season_current` instead of `season`.
+Each pattern has a weight that controls where it appears in the list. Lower numbers appear first.
 
 | Pattern | Default | Examples |
 |---------|---------|----------|
@@ -89,7 +96,7 @@ Patterns named `*_current` are boosted variants that match the current season, m
 | `leet_multi` | 20000 | `W3l<0m31` |
 | `leet_uncommon` | 30000 | `Wel{ome1` |
 
-Leet weights are added to the base pattern weight of the password they derived from. So `W3lcom31` (leet of `Welcome1`) scores `static + leet_common` = 100 + 10000 = 10100. This keeps all non-leet passwords above all leet variants, while preserving the original pattern ordering within leet.
+Patterns named `*_current` match the current season or month based on your system clock. Leet variants always appear below all non-leet passwords, following the same pattern ordering as their base passwords.
 
 ---
 

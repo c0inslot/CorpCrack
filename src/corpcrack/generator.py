@@ -307,6 +307,7 @@ def generate(
     year_start: int | None = None,
     year_end: int | None = None,
     weights: dict[str, int] | None = None,
+    tiers: set[str] | None = None,
 ) -> list[str]:
     """Generate a de-duplicated password list sorted by likelihood.
 
@@ -320,6 +321,8 @@ def generate(
         Inclusive year range for time-based password generation.
     weights : dict, optional
         Tier weights that override DEFAULT_WEIGHTS.
+    tiers : set[str], optional
+        If provided, only include passwords from these tier names.
 
     Returns
     -------
@@ -330,12 +333,12 @@ def generate(
     if weights:
         w.update(weights)
 
-    # scored: password -> (tier, sub_order)
-    scored: dict[str, tuple[int, int]] = {}
+    # scored: password -> (weight, sub_order, tier_name)
+    scored: dict[str, tuple[int, int, str]] = {}
 
-    def _add(pw: str, tier: int, sub: int = 0) -> None:
-        key = (tier, sub)
-        if pw not in scored or key < scored[pw]:
+    def _add(pw: str, tier_name: str, weight: int, sub: int = 0) -> None:
+        key = (weight, sub, tier_name)
+        if pw not in scored or key[:2] < scored[pw][:2]:
             scored[pw] = key
 
     years: list[int] = []
@@ -352,7 +355,7 @@ def generate(
 
     # ---- 1. Static common passwords (index = rank) ----
     for i, pw in enumerate(STATIC_PASSWORDS):
-        _add(pw, w["static"], i)
+        _add(pw, "static", w["static"], i)
 
     # ---- 2. Current-time patterns (auto-detected) ----
     if year_is_current:
@@ -363,30 +366,30 @@ def generate(
         for season in current_seasons:
             for s in (season, season.lower()):
                 for yr in (yr_full, yr_short):
-                    _add(f"{s}{yr}", w["season_current"])
-                    _add(f"{s}{yr}!", w["season_current"])
-                    _add(f"{s}{yr}#", w["season_current"])
+                    _add(f"{s}{yr}", "season_current", w["season_current"])
+                    _add(f"{s}{yr}!", "season_current", w["season_current"])
+                    _add(f"{s}{yr}#", "season_current", w["season_current"])
 
         # Current month + year
         for m in (current_month_full, current_month_full.lower(),
                   current_month_abbr, current_month_abbr.lower()):
             for yr in (yr_full, yr_short):
-                _add(f"{m}{yr}", w["month_current"])
-                _add(f"{m}{yr}!", w["month_current"])
+                _add(f"{m}{yr}", "month_current", w["month_current"])
+                _add(f"{m}{yr}!", "month_current", w["month_current"])
 
         # Welcome / Password + current year
         for base in ("Welcome", "welcome", "Password", "password"):
             for yr in (yr_full, yr_short):
-                _add(f"{base}{yr}", w["welcome_current"])
-                _add(f"{base}{yr}!", w["welcome_current"])
+                _add(f"{base}{yr}", "welcome_current", w["welcome_current"])
+                _add(f"{base}{yr}!", "welcome_current", w["welcome_current"])
 
     # ---- 3. Winteriscoming + year ----
     for year in years:
         yr_short = str(year)[2:]
         for base in ("Winteriscoming", "winteriscoming"):
             for yr in (str(year), yr_short):
-                _add(f"{base}{yr}", w["special"])
-                _add(f"{base}{yr}!", w["special"])
+                _add(f"{base}{yr}", "special", w["special"])
+                _add(f"{base}{yr}!", "special", w["special"])
 
     # ---- 4. Company-name-derived passwords ----
     name_bases: set[str] = set()
@@ -401,7 +404,7 @@ def generate(
     for name in sorted(name_bases):
         # Company + bare suffix (ranked by suffix position)
         for idx, suffix in enumerate(BARE_SUFFIXES):
-            _add(f"{name}{suffix}", w["company"], idx)
+            _add(f"{name}{suffix}", "company", w["company"], idx)
 
         # Company + current season/month
         if year_is_current:
@@ -410,50 +413,50 @@ def generate(
             for season in current_seasons:
                 for s in (season, season.lower()):
                     for yr in (yr_full, yr_short):
-                        _add(f"{name}{s}{yr}", w["company_current"])
-                        _add(f"{name}{s}{yr}!", w["company_current"])
+                        _add(f"{name}{s}{yr}", "company_current", w["company_current"])
+                        _add(f"{name}{s}{yr}!", "company_current", w["company_current"])
             for m in (current_month_abbr, current_month_abbr.lower()):
                 for yr in (yr_full, yr_short):
-                    _add(f"{name}{m}{yr}", w["company_current"])
-                    _add(f"{name}{m}{yr}!", w["company_current"])
+                    _add(f"{name}{m}{yr}", "company_current", w["company_current"])
+                    _add(f"{name}{m}{yr}!", "company_current", w["company_current"])
 
         # Company + year
         for year in years:
             yr_short = str(year)[2:]
             for yr in (str(year), yr_short):
                 for cap in YEAR_CAPS:
-                    _add(f"{name}{yr}{cap}", w["company_year"])
-                    _add(f"{name}@{yr}{cap}", w["company_year"])
+                    _add(f"{name}{yr}{cap}", "company_year", w["company_year"])
+                    _add(f"{name}@{yr}{cap}", "company_year", w["company_year"])
 
             # Company + season + year
             for season in SEASONS:
                 for s in (season, season.lower()):
                     for yr in (str(year), yr_short):
-                        _add(f"{name}{s}{yr}", w["company_season"])
-                        _add(f"{name}{s}{yr}!", w["company_season"])
+                        _add(f"{name}{s}{yr}", "company_season", w["company_season"])
+                        _add(f"{name}{s}{yr}!", "company_season", w["company_season"])
 
             # Company + month + year (abbreviated)
             for _, month_abbr in MONTHS:
                 for yr in (str(year), yr_short):
-                    _add(f"{name}{month_abbr}{yr}", w["company_month"])
-                    _add(f"{name}{month_abbr}{yr}!", w["company_month"])
+                    _add(f"{name}{month_abbr}{yr}", "company_month", w["company_month"])
+                    _add(f"{name}{month_abbr}{yr}!", "company_month", w["company_month"])
 
         # Welcome + company + year
         for year in years:
             yr_short = str(year)[2:]
             for yr in (str(year), yr_short):
-                _add(f"Welcome2{name}{yr}", w["welcome_company"])
-                _add(f"Welcome2{name}{yr}!", w["welcome_company"])
-                _add(f"welcome2{name}{yr}", w["welcome_company"])
-                _add(f"welcome2{name}{yr}!", w["welcome_company"])
+                _add(f"Welcome2{name}{yr}", "welcome_company", w["welcome_company"])
+                _add(f"Welcome2{name}{yr}!", "welcome_company", w["welcome_company"])
+                _add(f"welcome2{name}{yr}", "welcome_company", w["welcome_company"])
+                _add(f"welcome2{name}{yr}!", "welcome_company", w["welcome_company"])
 
     # ---- 5. Welcome / Password + year (all years) ----
     for year in years:
         yr_short = str(year)[2:]
         for base in ("Welcome", "welcome", "Password", "password"):
             for yr in (str(year), yr_short):
-                _add(f"{base}{yr}", w["welcome"])
-                _add(f"{base}{yr}!", w["welcome"])
+                _add(f"{base}{yr}", "welcome", w["welcome"])
+                _add(f"{base}{yr}!", "welcome", w["welcome"])
 
     # ---- 6. Generic season + year ----
     for year in years:
@@ -461,9 +464,9 @@ def generate(
         for season in SEASONS:
             for s in (season, season.lower()):
                 for yr in (str(year), yr_short):
-                    _add(f"{s}{yr}", w["season"])
-                    _add(f"{s}{yr}!", w["season"])
-                    _add(f"{s}{yr}#", w["season"])
+                    _add(f"{s}{yr}", "season", w["season"])
+                    _add(f"{s}{yr}!", "season", w["season"])
+                    _add(f"{s}{yr}#", "season", w["season"])
 
     # ---- 7. Generic month + year ----
     for year in years:
@@ -471,28 +474,32 @@ def generate(
         for month_full, month_abbr in MONTHS:
             for m in (month_full, month_full.lower(), month_abbr, month_abbr.lower()):
                 for yr in (str(year), yr_short):
-                    _add(f"{m}{yr}", w["month"])
-                    _add(f"{m}{yr}!", w["month"])
+                    _add(f"{m}{yr}", "month", w["month"])
+                    _add(f"{m}{yr}!", "month", w["month"])
 
     # ---- 8. Leetspeak transformations on every password above ----
     base_items = list(scored.items())
-    for pw, (base_tier, base_sub) in base_items:
+    for pw, (base_weight, base_sub, _base_tier) in base_items:
         # Common single substitutions
         for src, dst in LEET_COMMON_SINGLE:
             variant = _leet_single(pw, src, dst)
             if variant:
-                _add(variant, base_tier + w["leet_common"], base_sub)
+                _add(variant, "leet_common", base_weight + w["leet_common"], base_sub)
 
         # Multi substitution (all common applied at once)
         variant = _leet_multi_apply(pw, LEET_MULTI)
         if variant:
-            _add(variant, base_tier + w["leet_multi"], base_sub)
+            _add(variant, "leet_multi", base_weight + w["leet_multi"], base_sub)
 
         # Uncommon single substitutions
         for src, dst in LEET_UNCOMMON_SINGLE:
             variant = _leet_single(pw, src, dst)
             if variant:
-                _add(variant, base_tier + w["leet_uncommon"], base_sub)
+                _add(variant, "leet_uncommon", base_weight + w["leet_uncommon"], base_sub)
 
-    # Sort: (tier, sub_order, password_string)
-    return [pw for pw, _ in sorted(scored.items(), key=lambda x: (x[1], x[0]))]
+    # Filter by tiers if requested
+    if tiers:
+        scored = {pw: v for pw, v in scored.items() if v[2] in tiers}
+
+    # Sort: (weight, sub_order, password_string)
+    return [pw for pw, _ in sorted(scored.items(), key=lambda x: (x[1][:2], x[0]))]
