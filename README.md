@@ -36,9 +36,18 @@ CorpCrack generates a single likelihood-sorted list that serves two purposes. To
 ## Installation
 
 ```bash
+pipx install corpcrack
+```
+```bash
+uv tool install corpcrack
+```
+
+Or install from latest commit:
+
+```bash
 pipx install git+https://github.com/c0inslot/corpcrack
 ```
-```
+```bash
 uv tool install git+https://github.com/c0inslot/corpcrack
 ```
 
