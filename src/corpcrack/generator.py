@@ -139,6 +139,13 @@ STATIC_PASSWORDS: list[str] = [
     "2wsx3edc",
     "3edc4rfv",
 
+    # ---- Keyboard walks — number runs ----
+    "123456",
+    "1234567",
+    "12345678",
+    "123456789",
+    "1234567890",
+
     # ---- Keyboard walks — row walks ----
     "Qwerty1",
     "qwerty1",
@@ -167,6 +174,8 @@ STATIC_PASSWORDS: list[str] = [
     "Iloveyou1",
     "Winteriscoming1",
     "winteriscoming1",
+    "Summeriscoming1",
+    "summeriscoming1",
     "Sunshine1",
     "Superman1",
     "Batman123",
@@ -402,10 +411,11 @@ def generate(
             for yr in (yr_full, yr_short):
                 _add_with_mods(f"{base}{yr}", "welcome_current", w["welcome_current"])
 
-    # ---- 3. Winteriscoming + year ----
+    # ---- 3. Well-known phrases + year ----
     for year in years:
         yr_short = str(year)[2:]
-        for base in ("Winteriscoming", "winteriscoming"):
+        for base in ("Winteriscoming", "winteriscoming",
+                      "Summeriscoming", "summeriscoming"):
             for yr in (str(year), yr_short):
                 _add_with_mods(f"{base}{yr}", "special", w["special"])
 
