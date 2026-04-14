@@ -465,12 +465,25 @@ def generate(
                 for yr in (str(year), yr_short):
                     _add_with_mods(f"{name}{month_abbr}{yr}", "company_month", w["company_month"])
 
-        # Welcome + company + year
+        # Welcome2 + company + year (literal "Welcome" + digit "2" + company)
         for year in years:
             yr_short = str(year)[2:]
             for yr in (str(year), yr_short):
                 _add_with_mods(f"Welcome2{name}{yr}", "welcome_company", w["welcome_company"])
                 _add_with_mods(f"welcome2{name}{yr}", "welcome_company", w["welcome_company"])
+
+        # Company + Welcome/Password combos (both orderings, with suffixes and years)
+        for word in ("Welcome", "welcome", "Password", "password"):
+            # Bare and numeric-suffix variants (no year)
+            for suffix in ("", "1", "123"):
+                _add_with_mods(f"{name}{word}{suffix}", "welcome_company", w["welcome_company"])
+                _add_with_mods(f"{word}{name}{suffix}", "welcome_company", w["welcome_company"])
+            # Year variants
+            for year in years:
+                yr_short = str(year)[2:]
+                for yr in (str(year), yr_short):
+                    _add_with_mods(f"{name}{word}{yr}", "welcome_company", w["welcome_company"])
+                    _add_with_mods(f"{word}{name}{yr}", "welcome_company", w["welcome_company"])
 
     # ---- 5. Welcome / Password + year (all years) ----
     for year in years:
